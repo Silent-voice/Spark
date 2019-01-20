@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import json
-import static
 
 def extract_id_domain(x):
     pk = json.loads(x)
@@ -9,6 +8,8 @@ def extract_id_domain(x):
 
 
 def domain_to_vec(x):
+    static = __import__('static')
+    static._init()
     charList = static.get_value('charList')
     domain = x[1]
     vec = []
