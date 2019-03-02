@@ -1,0 +1,2 @@
+nohup python main.py 0 128 1 /home/audr/code/train_model/data/360/train.txt /home/audr/code/train_model/dga_model.h5 /home/audr/code/train_model/data/360/test.txt /home/audr/code/train_model/data/360/test_label.txt &
+python main.py 1 128 1 /home/audr/code/train_model/data/360/test.txt /home/audr/code/train_model/dga_model.h5 /home/audr/code/train_model/test_res.txt

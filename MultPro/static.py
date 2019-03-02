@@ -5,6 +5,12 @@ import codecs
 def _init():
     global _global_dict
     _global_dict = {
+                    'dns_db' : 'mongodb://ip/db_name.table_name',
+                    'ssl_db': 'mongodb://ip/db_name.table_name',
+                    'ftp_db': 'mongodb://ip/db_name.table_name',
+                    'res_db': 'mongodb://ip/db_name.table_name',
+
+
                     # 本地路径
                     'dns_data_dir_local_path' : '/home/audr/code/ML_test/data/dns',
                     'ssl_data_dir_local_path': '/home/audr/code/ML_test/data/ftp',

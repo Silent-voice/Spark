@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
-
 def extract_id_domain(x):
     import json
     pk = json.loads(x)
@@ -25,13 +23,26 @@ def domain_to_vec(x):
 
     return (domain,vec)
 
+def create_new_file_name(prefix):
+    import random
+    import os
+    while True:
+        num = random.randint(0,10000)
+        file_path = prefix + str(num) + '.txt'
+        if os.path.exists(file_path):
+            continue
+        else:
+            break
 
+    return file_path
 
 def predict(domain_list, X_test, batch_size, modelPath):
     import os
     os.environ['KERAS_BACKEND']='tensorflow'
-
     import keras
+
+
+
     X_test = keras.preprocessing.sequence.pad_sequences(X_test, maxlen=75)
     # 加载模型，进行判别
 
@@ -53,9 +64,13 @@ def domain_predict(x_list):
         vec_list.append(x[1])
 
 
-
-    # return vec_list
     x_data_sum = np.array(vec_list)
     res_list = predict(domain_list, x_data_sum, 128, '/home/audr/code/dga_model.h5')
+
+    f = open(create_new_file_name('/home/audr/code/dga_res'), 'w+')
+    for i in res_list:
+        f.write(str(i) + '\n')
+    f.close()
+
     return res_list
 

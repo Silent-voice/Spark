@@ -23,3 +23,6 @@ def delete_local_files(file_path_list):
     for file_path in file_path_list:
         os.remove(file_path)
     return
+
+
+

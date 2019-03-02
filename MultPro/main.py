@@ -3,31 +3,43 @@ import time
 import datetime
 import static
 from methods import *
-from pyspark import SparkContext
+from pyspark import SparkContext, SparkConf
 from dns import dns_control
+from multiprocessing import Pool
+import threading
 
 
 if __name__ == '__main__':
     static._init()
     scan_interval = static.get_value('scan_interval')
-    dns_data_dir_local_path = static.get_value('dns_data_dir_local_path')
-    ssl_data_dir_local_path = static.get_value('ssl_data_dir_local_path')
-    ftp_data_dir_local_path = static.get_value('ftp_data_dir_local_path')
-
     dns_data_dir_hdfs_path = static.get_value('dns_data_dir_hdfs_path')
-    ssl_data_dir_hdfs_path = static.get_value('ssl_data_dir_hdfs_path')
-    ftp_data_dir_hdfs_path = static.get_value('ftp_data_dir_hdfs_path')
-
     dns_feature_dir_hdfs_path = static.get_value('dns_feature_dir_hdfs_path')
-    ssl_feature_dir_hdfs_path = static.get_value('ssl_feature_dir_hdfs_path')
-    ftp_feature_dir_hdfs_path = static.get_value('ftp_feature_dir_hdfs_path')
 
+    # conf = SparkConf().setMaster('spark://master:7077').setAppName('ml')
+    # conf.set('spark.scheduler.mode', 'FAIR')
+    # sc = SparkContext(conf=conf)
     sc = SparkContext('spark://master:7077', 'ml')
     sc.addPyFile('/home/audr/code/ML_test/static.py')
     sc.addPyFile('/home/audr/code/ML_test/dns/dns_methods.py')
     batch_id = datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
 
-    dns_control.control(sc, dns_data_dir_hdfs_path, dns_feature_dir_hdfs_path, batch_id)
+    # try:
+        # threading.Thread(target=dns_control.control, args=(sc, '/data/dns/dns_0.txt', dns_feature_dir_hdfs_path, batch_id)).start()
+        # threading.Thread(target=dns_control.control,
+        #                  args=(sc, '/data/dns/dns_1.txt', dns_feature_dir_hdfs_path, batch_id)).start()
+        # thread.start_new_thread(dns_control.control, ('/data/dns/dns_0.txt', dns_feature_dir_hdfs_path, batch_id))
+        # thread.start_new_thread(dns_control.control, ('/data/dns/dns_1.txt', dns_feature_dir_hdfs_path, batch_id))
+    # except:
+    #     print "Error: unable to start thread"
+
+    # db_pool = Pool(processes=3)
+    # db_pool.apply_async(dns_control.control, ['/data/dns/dns_0.txt', dns_feature_dir_hdfs_path, batch_id])
+    # db_pool.apply_async(dns_control.control, ['/data/dns/dns_1.txt', dns_feature_dir_hdfs_path, batch_id])
+    # db_pool.apply_async(dns_control.control, ['/data/dns/dns_2.txt', dns_feature_dir_hdfs_path, batch_id])
+    # db_pool.close()
+    # db_pool.join()
+
+    # dns_control.control(sc, dns_data_dir_hdfs_path, dns_feature_dir_hdfs_path, batch_id)
 
     # while True:
     #     dns_file_list = scan(dns_data_dir_local_path)
